@@ -9,6 +9,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       charName: '',
+      dama: 0,
       baseAtt: {
         stre: 0,
         dext: 0,
@@ -27,7 +28,7 @@ export default class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   handleCombAtt() {
-    var vita = 3+parseFloat(this.state.baseAtt.stre)
+    var vita = 3+parseFloat(this.state.baseAtt.stre)-parseFloat(this.state.dama)
     var evas = 10+parseFloat(this.state.baseAtt.dext)
     // var arm = evas
     var alac = parseFloat(this.state.baseAtt.dext+this.state.baseAtt.mind)
@@ -47,8 +48,17 @@ export default class App extends React.Component {
     })
   }
 
+  handleDamage() {
+    var ca = this.state.combAtt;
+    ca.vita -= 1;
+    var dama = this.state.dama + 1;
+    this.setState({
+      combAtt: ca,
+      dama: dama,
+    })
+  }
+
   handleChange(e) {
-    // console.log("handling change", e.target.className)
     if(e.target.className === "baseAtt") {
       var ba = this.state.baseAtt;
       ba.[e.target.id] = e.target.value;
@@ -56,13 +66,17 @@ export default class App extends React.Component {
       this.setState({
         baseAtt: ba,
       })
+
       this.handleCombAtt();
+    } else if (e.target.id === "dama") {
+      this.handleDamage();
     } else {
       this.setState({
         [e.target.id]: e.target.value,
       })
     }
   }
+
   render() {
     return (
       <div className="App">
@@ -70,6 +84,7 @@ export default class App extends React.Component {
           <input type="text" id="charName" value={this.state.charName} onChange={this.handleChange}></input>
           <BaseAttributes baseAtt={this.state.baseAtt} handleChange={this.handleChange}/>
           <CombatAttributes combAtt={this.state.combAtt} baseAtt={this.state.baseAtt} handleChange={this.handleChange}/>
+          <div>Damage <input type="number" id="dama" value={this.dama} onChange={this.handleChange}></input></div>
         </header>
       </div>
     );
