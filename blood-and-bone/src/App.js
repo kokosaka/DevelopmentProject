@@ -4,12 +4,12 @@ import React from 'react';
 import BaseAttributes from './baseAtt';
 import CombatAttributes from './combatAtt';
 import Skills from './skills';
+import NameInput from './name-input';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameInputted: false,
       charName: '',
       dama: 0,
       baseAtt: {
@@ -135,11 +135,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          {this.state.nameInputted ?
-            <h1>{this.state.charName}</h1> :
-            <input type="text" id="charName" value={this.state.charName} onChange={this.handleChange}/>
-          }
-          <button type="submit" onClick={() => this.setState({nameInputted: !this.state.nameInputted})}>{this.state.nameInputted ? "edit" : "done"}</button>
+          <NameInput nameInputted={this.state.nameInputted} charName={this.state.charName} handleChange={this.handleChange}/>
           <BaseAttributes baseAtt={this.state.baseAtt} handleChange={this.handleChange}/>
           <CombatAttributes combAtt={this.state.combAtt} handleChange={this.handleChange}/>
           <div>Damage <input type="number" id="dama" min="0" value={this.state.dama} onChange={this.handleChange}></input></div>
