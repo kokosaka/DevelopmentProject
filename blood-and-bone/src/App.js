@@ -1,21 +1,19 @@
-import './App.css';
-import React from 'react';
+import "./App.css";
+import React from "react";
 
-import BaseAttributes from './components/base-att'
-import CombatAttributes from './components/combat-att';
-import Skills from './components/skills';
-import NameInput from './components/name-input';
-import Damage from './components/damage';
-import ImportExport from './components/import-export';
-
-
+import BaseAttributes from "./components/base-att";
+import CombatAttributes from "./components/combat-att";
+import Skills from "./components/skills";
+import NameInput from "./components/name-input";
+import Damage from "./components/damage";
+import ImportExport from "./components/import-export";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      charName: '',
-      searchName: '',
+      charName: "",
+      searchName: "",
       dama: 0,
       baseAtt: {
         strength: 0,
@@ -45,7 +43,7 @@ export default class App extends React.Component {
         manipulation: 0,
         insight: 0,
         power: 0,
-      }
+      },
     };
     this.handleChange = this.handleChange.bind(this);
     this.import = this.import.bind(this);
@@ -55,17 +53,23 @@ export default class App extends React.Component {
     fetch(`data/${this.state.searchName}.json`)
       .then((r) => r.json())
       .then((data) => {
-        this.setState(data)
-      })
+        this.setState(data);
+      });
   }
 
   handleCombAtt() {
-    var vita = 3+parseFloat(this.state.baseAtt.strength)-parseFloat(this.state.dama)
-    var evas = 10+parseFloat(this.state.baseAtt.dexterity)
+    var vita =
+      3 + parseFloat(this.state.baseAtt.strength) - parseFloat(this.state.dama);
+    var evas = 10 + parseFloat(this.state.baseAtt.dexterity);
     // var arm = evas
-    var alac = parseFloat(this.state.baseAtt.dexterity)+parseFloat(this.state.baseAtt.mind)
-    var tena = this.state.baseAtt.presence === 0 ? 0 : 1+parseFloat(this.state.baseAtt.presence)
-    var pow = 0
+    var alac =
+      parseFloat(this.state.baseAtt.dexterity) +
+      parseFloat(this.state.baseAtt.mind);
+    var tena =
+      this.state.baseAtt.presence === 0
+        ? 0
+        : 1 + parseFloat(this.state.baseAtt.presence);
+    var pow = 0;
 
     var ca = {
       vitality: vita,
@@ -74,10 +78,10 @@ export default class App extends React.Component {
       alacrity: alac,
       tenacity: tena,
       power: pow,
-    }
+    };
     this.setState({
       combAtt: ca,
-    })
+    });
   }
 
   handleDamage(e) {
@@ -85,15 +89,15 @@ export default class App extends React.Component {
     ca.vitality -= 1;
     this.setState({
       combAtt: ca,
-      dama: this.state.dama+1,
-    })
+      dama: this.state.dama + 1,
+    });
   }
   handleTenacity(e) {
     var ca = this.state.combAtt;
     ca.tenacity = e.target.value;
     this.setState({
       combAtt: ca,
-    })
+    });
   }
 
   //skills can only go as high as the lowest associated base attribute
@@ -101,36 +105,39 @@ export default class App extends React.Component {
     var s = this.state.skills;
     var ba = this.state.baseAtt;
     var skill = e.target.id;
-    if((skill === "fighting" && (ba.strength > s.fighting && ba.dexterity > s.fighting)) ||
-    (skill === "power" && (ba.presence > s.power && ba.mind > s.power)) ||
-    (skill === "thievery" && ba.dexterity > s.thievery) ||
-    (skill === "stealth" && ba.dexterity > s.stealth) ||
-    (skill === "archery" && ba.dexterity > s.archery) ||
-    (skill === "learned" && ba.mind > s.learned) ||
-    (skill === "survival" && ba.mind > s.survival) ||
-    (skill === "perception" && ba.mind > s.perception) ||
-    (skill === "apothecary" && ba.mind > s.apothecary) ||
-    (skill === "intimidation" && ba.presence > s.intimidation) ||
-    (skill === "performance" && ba.presence > s.performance) ||
-    (skill === "manipulation" && ba.presence > s.manipulation)||
-    (skill === "insight" && ba.presence > s.insight)) {
-      s.[skill] += 1;
+    if (
+      (skill === "fighting" &&
+        ba.strength > s.fighting &&
+        ba.dexterity > s.fighting) ||
+      (skill === "power" && ba.presence > s.power && ba.mind > s.power) ||
+      (skill === "thievery" && ba.dexterity > s.thievery) ||
+      (skill === "stealth" && ba.dexterity > s.stealth) ||
+      (skill === "archery" && ba.dexterity > s.archery) ||
+      (skill === "learned" && ba.mind > s.learned) ||
+      (skill === "survival" && ba.mind > s.survival) ||
+      (skill === "perception" && ba.mind > s.perception) ||
+      (skill === "apothecary" && ba.mind > s.apothecary) ||
+      (skill === "intimidation" && ba.presence > s.intimidation) ||
+      (skill === "performance" && ba.presence > s.performance) ||
+      (skill === "manipulation" && ba.presence > s.manipulation) ||
+      (skill === "insight" && ba.presence > s.insight)
+    ) {
+      s[skill] += 1;
     }
 
     this.setState({
       skills: s,
-    })
-
+    });
   }
 
   handleChange(e) {
-    if(e.target.className === "baseAtt") {
+    if (e.target.className === "baseAtt") {
       var ba = this.state.baseAtt;
-      ba.[e.target.id] = e.target.value;
+      ba[e.target.id] = e.target.value;
 
       this.setState({
         baseAtt: ba,
-      })
+      });
 
       this.handleCombAtt();
     } else if (e.target.className === "skills") {
@@ -142,7 +149,7 @@ export default class App extends React.Component {
     } else {
       this.setState({
         [e.target.id]: e.target.value,
-      })
+      });
     }
   }
 
@@ -150,14 +157,28 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <NameInput nameInputted={this.state.nameInputted} charName={this.state.charName} handleChange={this.handleChange}/>
-          <BaseAttributes baseAtt={this.state.baseAtt} handleChange={this.handleChange}/>
-          <CombatAttributes combAtt={this.state.combAtt} handleChange={this.handleChange}/>
+          <NameInput
+            nameInputted={this.state.nameInputted}
+            charName={this.state.charName}
+            handleChange={this.handleChange}
+          />
+          <BaseAttributes
+            baseAtt={this.state.baseAtt}
+            handleChange={this.handleChange}
+          />
+          <CombatAttributes
+            combAtt={this.state.combAtt}
+            handleChange={this.handleChange}
+          />
           <Damage dama={this.state.dama} handleChange={this.handleChange} />
           <Skills skills={this.state.skills} handleChange={this.handleChange} />
-          <ImportExport state={this.state} import={this.import} handleChange={this.handleChange}/>
+          <ImportExport
+            state={this.state}
+            import={this.import}
+            handleChange={this.handleChange}
+          />
         </header>
       </div>
     );
   }
-};
+}
