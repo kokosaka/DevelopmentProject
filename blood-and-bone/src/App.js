@@ -70,7 +70,7 @@ export default class App extends React.Component {
     ca.vitality -= 1;
     this.setState({
       combAtt: ca,
-      dama: e.target.value,
+      dama: this.state.dama+1,
     })
   }
   handleTenacity(e) {
@@ -138,7 +138,11 @@ export default class App extends React.Component {
           <NameInput nameInputted={this.state.nameInputted} charName={this.state.charName} handleChange={this.handleChange}/>
           <BaseAttributes baseAtt={this.state.baseAtt} handleChange={this.handleChange}/>
           <CombatAttributes combAtt={this.state.combAtt} handleChange={this.handleChange}/>
-          <div>Damage <input type="number" id="dama" min="0" value={this.state.dama} onChange={this.handleChange}></input></div>
+          <div>
+            <h1>Damage</h1>
+            <h2>{this.state.dama}</h2>
+            <button id="dama" min="0" onClick={this.handleChange}>take damage</button>
+          </div>
           <Skills skills={this.state.skills} handleChange={this.handleChange} />
         </header>
       </div>
