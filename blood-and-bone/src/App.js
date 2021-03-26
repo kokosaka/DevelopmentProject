@@ -5,12 +5,17 @@ import BaseAttributes from './components/base-att'
 import CombatAttributes from './components/combat-att';
 import Skills from './components/skills';
 import NameInput from './components/name-input';
+import Damage from './components/damage';
+import ImportExport from './components/import-export';
+
+
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       charName: '',
+      searchName: '',
       dama: 0,
       baseAtt: {
         strength: 0,
@@ -43,7 +48,17 @@ export default class App extends React.Component {
       }
     };
     this.handleChange = this.handleChange.bind(this);
+    this.import = this.import.bind(this);
   }
+
+  import() {
+    fetch(`data/${this.state.searchName}.json`)
+      .then((r) => r.json())
+      .then((data) => {
+        this.setState(data)
+      })
+  }
+
   handleCombAtt() {
     var vita = 3+parseFloat(this.state.baseAtt.strength)-parseFloat(this.state.dama)
     var evas = 10+parseFloat(this.state.baseAtt.dexterity)
@@ -138,22 +153,9 @@ export default class App extends React.Component {
           <NameInput nameInputted={this.state.nameInputted} charName={this.state.charName} handleChange={this.handleChange}/>
           <BaseAttributes baseAtt={this.state.baseAtt} handleChange={this.handleChange}/>
           <CombatAttributes combAtt={this.state.combAtt} handleChange={this.handleChange}/>
-          <div>
-            <h1>Damage</h1>
-            <h2>{this.state.dama}</h2>
-            <button id="dama" min="0" onClick={this.handleChange}>take damage</button>
-          </div>
+          <Damage dama={this.state.dama} handleChange={this.handleChange} />
           <Skills skills={this.state.skills} handleChange={this.handleChange} />
-
-          <a
-            type="button"
-            href={`data:text/json;charset=utf-8,${encodeURIComponent(
-            JSON.stringify(this.state)
-            )}`}
-            download={`${this.state.charName}.json`}
-            >
-          {`Export Character`}
-          </a>
+          <ImportExport state={this.state} import={this.import} handleChange={this.handleChange}/>
         </header>
       </div>
     );
