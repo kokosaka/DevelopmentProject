@@ -5,9 +5,12 @@ export default function NameInput(props) {
 
   return (
     <div>
+      <h1>Name</h1>
       {nameInputted ?
         <h1>{props.charName}</h1> :
-        <input type="text" id="charName" value={props.charName} onChange={props.handleChange}/>
+        <div>
+          <input type="text" id="charName" value={props.charName} onChange={props.handleChange} placeholder="enter character name"/>
+        </div>
       }
       <button type="submit" onClick={() => setNameInputted(!nameInputted)}>{nameInputted ? "edit" : "done"}</button>
     </div>

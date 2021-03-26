@@ -1,8 +1,8 @@
 export default function Skills(props) {
   return (
     <div>
-      Skills
-      <div>
+      <h1>Skills</h1>
+      <div className="skills-container">
         {Object.entries(props.skills).map(([att, value]) => {
             return (
               <div>{att} {value} {value === 0 ? "untrained" : value === 1 ? "novice" : value === 2 ? "apprentice" : value === 3 ? "adept" : value === 4 ? "expert" : "master"}
