@@ -1,10 +1,10 @@
 import './App.css';
 import React from 'react';
 
-import BaseAttributes from './baseAtt';
-import CombatAttributes from './combatAtt';
-import Skills from './skills';
-import NameInput from './name-input';
+import BaseAttributes from './components/base-att'
+import CombatAttributes from './components/combat-att';
+import Skills from './components/skills';
+import NameInput from './components/name-input';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -144,6 +144,16 @@ export default class App extends React.Component {
             <button id="dama" min="0" onClick={this.handleChange}>take damage</button>
           </div>
           <Skills skills={this.state.skills} handleChange={this.handleChange} />
+
+          <a
+            type="button"
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(
+            JSON.stringify(this.state)
+            )}`}
+            download={`${this.state.charName}.json`}
+            >
+          {`Export Character`}
+          </a>
         </header>
       </div>
     );

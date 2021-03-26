@@ -1,4 +1,4 @@
-import DependantAttribute from "./dep-attribute";
+import DependantAttribute from './dep-attribute';
 
 export default function CombatAttributes(props) {
   return (
